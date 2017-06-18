@@ -386,6 +386,10 @@ MultipleChoice.prototype.scoreMCMASubmission = function () {
             this.correctCount++;
             givenIndex++;
             correctIndex++;
+            var data = {
+                pointDelta: 1	//Add 1 points per each correct answer in multiple answer question
+            };
+            jQuery.ajax({url: eBookConfig.ajaxURL + 'modifyUserPoints', data: data, async: false});
         } else {
             correctIndex++;
         }
@@ -441,6 +445,10 @@ MultipleChoice.prototype.processMCMFSubmission = function (logFlag) {
 MultipleChoice.prototype.scoreMCMFSubmission = function () {
     if (this.givenArray[0] == this.correctIndexList[0]) {
         this.correct = true;
+        var data = {
+            pointDelta: 2	//Add 2 points per completed multiple choice question
+        };
+        jQuery.ajax({url: eBookConfig.ajaxURL + 'modifyUserPoints', data: data, async: false});
     } else if (this.givenArray[0] != null) { // if given is null then the question wasn"t answered and should be counted as skipped
         this.correct = false;
     }
