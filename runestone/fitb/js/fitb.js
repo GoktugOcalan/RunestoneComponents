@@ -288,6 +288,10 @@ FITB.prototype.evaluateAnswers = function () {
     }
     if ($.inArray("", this.isCorrectArray) < 0 && $.inArray(false, this.isCorrectArray) < 0) {
         this.correct = true;
+        var data = {
+            pointDelta: 1	//1 point for correcly filled blank
+        };
+        jQuery.ajax({url: eBookConfig.ajaxURL + 'modifyUserPoints', data: data, async: false});
     } else if (this.isCompletelyBlank()) {
         this.correct = null;
     } else {
