@@ -127,6 +127,10 @@ LineBasedGrader.prototype.grade = function() {
 			    }
 				correct = true;
 				problem.helpButton.disabled = true;
+				var data = {
+				    pointDelta: 2	//If all of them positioned correctly add 2 points
+				};
+				jQuery.ajax({url: eBookConfig.ajaxURL + 'modifyUserPoints', data: data, async: false});
 			} else {
 				// Incorrect Indention
 				state = "incorrectIndent";
