@@ -336,6 +336,12 @@ DragNDrop.prototype.dragEval = function (logFlag) {
         }
     }
     this.correctNum = this.dragNum - this.incorrectNum - this.unansweredNum;
+    if (this.correctNum == this.dragNum) {
+        var data = {
+            pointDelta: 2	//If all of them dragged correctly add 2 points
+        };
+        jQuery.ajax({url: eBookConfig.ajaxURL + 'modifyUserPoints', data: data, async: false});
+    }
     this.setLocalStorage({"correct": (this.correct ? "T" : "F")});
     this.renderFeedback();
     if (logFlag)   // Sometimes we don't want to log the answers--for example, on re-load of a timed exam
