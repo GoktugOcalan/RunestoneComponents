@@ -219,6 +219,45 @@ ActiveCode.prototype.createControls = function () {
         $(butt).click((function() {new AudioTour(this.divid, this.code, 1, $(this.origElem).data("audio"))}).bind(this));
     }
 
+    ifUnlocked = 0;
+    forUnlocked = 0;
+    whileUnlocked = 0;
+
+    jQuery.ajax({url: eBookConfig.ajaxURL + 'getUnlockedFeatures', async: false}).done(function (data) {
+        unlockedFeaturesResponseText = $.parseJSON(data);
+        $.each(unlockedFeaturesResponseText, function (index, value) {
+            ifUnlocked = value.if_code;
+            forUnlocked = value.for_code;
+            whileUnlocked = value.while_code;
+        });
+    });
+
+    if (ifUnlocked == 1) {
+        butt = document.createElement("button");
+        $(butt).addClass("ac_opt btn btn-default");
+        $(butt).text("If Statement");
+        $(butt).css("margin-left", "10px");
+        ctrlDiv.appendChild(butt);
+        $(butt).click(this.addIfCode.bind(this));        
+    }
+
+    if (forUnlocked == 1) {
+        butt = document.createElement("button");
+        $(butt).addClass("ac_opt btn btn-default");
+        $(butt).text("For Loop");
+        $(butt).css("margin-left", "10px");
+        ctrlDiv.appendChild(butt);
+        $(butt).click(this.addForCode.bind(this));        
+    }
+
+    if (whileUnlocked == 1) {
+        butt = document.createElement("button");
+        $(butt).addClass("ac_opt btn btn-default");
+        $(butt).text("While Loop");
+        $(butt).css("margin-left", "10px");
+        ctrlDiv.appendChild(butt);
+        $(butt).click(this.addWhileCode.bind(this));        
+    }
 
     $(this.outerDiv).prepend(ctrlDiv);
     this.controlDiv = ctrlDiv;
@@ -590,6 +629,23 @@ ActiveCode.prototype.showCodeCoach = function () {
     });
 };
 
+ActiveCode.prototype.addIfCode = function () {
+    var ifCodeString = "if x == true:\n    #some true action\nelse:\n    #some false action";
+    var cursorPos = this.editor.getCursor();
+    this.editor.replaceRange(ifCodeString, cursorPos);
+};
+
+ActiveCode.prototype.addForCode = function () {
+    var forCodeString = "for x in range(0, 10):\n    #some action";
+    var cursorPos = this.editor.getCursor();
+    this.editor.replaceRange(forCodeString, cursorPos);
+};
+
+ActiveCode.prototype.addWhileCode = function () {
+    var whileCodeString = "while (x < 10):\n    #some action";
+    var cursorPos = this.editor.getCursor();
+    this.editor.replaceRange(whileCodeString, cursorPos);
+};
 
 ActiveCode.prototype.toggleEditorVisibility = function () {
 
